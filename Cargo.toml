@@ -1,0 +1,8 @@
+[package]
+name = "hello-rhino"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+auto-launch = "0.5.0"
+iced = "0.13.1"
