@@ -1,8 +1,8 @@
 use crate::Message::ToggleLaunch;
 use auto_launch::{AutoLaunch, AutoLaunchBuilder};
-use iced::widget::{column, container, image, row, text, toggler, Container, Themer};
+use iced::widget::{column, container, image, row, text, toggler, Container, Themer, button};
 use iced::window::Position;
-use iced::{window, Alignment, Background, Color, Element, Length, Size, Task, Theme};
+use iced::{window, Alignment, Background, Color, Element, Length, Size, Task, Theme, Padding};
 
 const LOGO: &[u8] = include_bytes!("assets/logo.png");
 
@@ -17,6 +17,7 @@ fn main() -> iced::Result {
             width: 1200.0,
             height: 800.0,
         },
+        decorations: true,
         position: Position::Centered,
         ..Default::default()
     };
@@ -54,7 +55,7 @@ impl HelloRhino {
     }
 
     fn title(&self) -> String {
-        String::from("Hello Rhino")
+        String::from("Hello Rhino Linux")
     }
 
     fn update(&mut self, message: Message) -> Task<Message> {
@@ -73,8 +74,17 @@ impl HelloRhino {
 
     fn view(&self) -> Element<Message> {
         let header = header();
-        container(header)
+        let main_content = main_content();
+        let text_col = welcome_text();
+
+        let app_col = column![
+            header,
+            text_col,
+            main_content
+        ];
+        container(app_col)
             .height(Length::Fill)
+            .padding(Padding::from(5))
             .width(Length::Fill)
             .style(move |theme| container::Style {
                 text_color: Some(Color::WHITE),
@@ -93,17 +103,49 @@ fn header<'a>() -> Element<'a, Message> {
     let header = column![
         rhino_logo,
         row![
-            text("Welcome to Rhino Linux").size(36).font(iced::Font {
+            text("Welcome to Rhino Linux!").size(36).font(iced::Font {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),
             text("👋").shaping(text::Shaping::Advanced).size(36)
-        ].align_y(Alignment::Center).spacing(10),
+        ]
+        .align_y(Alignment::Center)
+        .spacing(10),
     ]
-        .align_x(Alignment::Center);
+    .align_x(Alignment::Center);
     container(header)
         .align_x(Alignment::Center)
         .width(Length::Fill)
         .height(Length::Fill)
         .into()
+}
+
+fn welcome_text<'a>() -> Element<'a, Message> {
+    let welcome_text_column = column![
+        row![
+            text("Thank you for joining our community!").size(24).center(),text("😊").size(24).shaping(text::Shaping::Advanced)].spacing(5).align_y(Alignment::Center),
+        text("We, the Rhino Linux Developers, hope that you will enjoy using Rhino Linux as much as we enjoy building it. The links below will help you get started with your new operating system. So enjoy the experience, and don’t hesitate to send us your feedback.").center().size(24)
+    ].spacing(20);
+    container(welcome_text_column)
+        .align_y(Alignment::Center)
+        .align_x(Alignment::Center)
+        .width(Length::Fill)
+        .height(Length::Fill)
+        .into()
+}
+
+fn main_content<'a>() -> Element<'a, Message> {
+
+    let content_column = row![
+        button(text("Annoucements").size(28).center()).width(300.0),
+        button(text("Wiki").size(28).center()).width(300.0),
+        button(text("Discord Community").center().size(28)).width(300.0),
+    ].align_y(Alignment::Center).spacing(10);
+
+    container(content_column)
+        .align_x(Alignment::Center)
+        .width(Length::Fill)
+        .height(Length::Fill)
+        .into()
+
 }
