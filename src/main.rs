@@ -1,8 +1,10 @@
 use crate::Message::ToggleLaunch;
 use auto_launch::{AutoLaunch, AutoLaunchBuilder};
-use iced::widget::{column, container, image, row, text, toggler, Themer, Container};
+use iced::widget::{column, container, image, row, text, toggler, Container, Themer};
 use iced::window::Position;
-use iced::{window, Alignment, Color, Element, Length, Size, Task, Theme, Background};
+use iced::{window, Alignment, Background, Color, Element, Length, Size, Task, Theme};
+
+const LOGO: &[u8] = include_bytes!("assets/logo.png");
 
 struct HelloRhino {
     launch_on_start: bool,
@@ -71,19 +73,21 @@ impl HelloRhino {
 
     fn view(&self) -> Element<Message> {
         let header = header();
-        container(header).height(Length::Fill).width(Length::Fill).style(move |theme| container::Style {
-            text_color: Some(Color::WHITE),
-            background: Some(Background::Color(Color::from_rgb8(19, 9, 60))),
-            border: Default::default(),
-            shadow: Default::default(),
-        }).into()
+        container(header)
+            .height(Length::Fill)
+            .width(Length::Fill)
+            .style(move |theme| container::Style {
+                text_color: Some(Color::WHITE),
+                background: Some(Background::Color(Color::from_rgb8(19, 9, 60))),
+                border: Default::default(),
+                shadow: Default::default(),
+            })
+            .into()
     }
 }
 
 fn header<'a>() -> Element<'a, Message> {
-    let rhino_logo = iced::widget::image("assets/rhino-linux.png")
-        .height(200.0)
-        .width(200.0);
+    let rhino_logo = iced::widget::image(image::Handle::from_bytes(LOGO)).height(200.0).width(200.0);
     let header = column![
         rhino_logo,
         text("Welcome to Rhino Linux").size(36).font(iced::Font {
