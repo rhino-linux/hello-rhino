@@ -87,15 +87,20 @@ impl HelloRhino {
 }
 
 fn header<'a>() -> Element<'a, Message> {
-    let rhino_logo = iced::widget::image(image::Handle::from_bytes(LOGO)).height(200.0).width(200.0);
+    let rhino_logo = iced::widget::image(image::Handle::from_bytes(LOGO))
+        .height(200.0)
+        .width(200.0);
     let header = column![
         rhino_logo,
-        text("Welcome to Rhino Linux").size(36).font(iced::Font {
-            weight: iced::font::Weight::Bold,
-            ..Default::default()
-        })
+        row![
+            text("Welcome to Rhino Linux").size(36).font(iced::Font {
+                weight: iced::font::Weight::Bold,
+                ..Default::default()
+            }),
+            text("👋").shaping(text::Shaping::Advanced).size(36)
+        ].align_y(Alignment::Center).spacing(10),
     ]
-    .align_x(Alignment::Center);
+        .align_x(Alignment::Center);
     container(header)
         .align_x(Alignment::Center)
         .width(Length::Fill)
