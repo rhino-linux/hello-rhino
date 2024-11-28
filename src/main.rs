@@ -119,7 +119,7 @@ impl HelloRhino {
     }
 
     fn update(&mut self, message: Message) -> Task<Message> {
-        return match message {
+        match message {
             Message::ToggleLaunch(launch) => {
                 self.launch_on_start = launch;
                 if self.launch_on_start {
@@ -135,42 +135,38 @@ impl HelloRhino {
                 };
                 Task::none()
             }
-
             Message::OpenWiki => {
                 if let Err(e) = webbrowser::open(RHINO_LINUX_WIKI_URL) {
                     eprintln!("Failed to open Wiki url:  {}", e);
                 };
                 Task::none()
             }
-
             Message::OpenAnnouncement => {
                 if let Err(e) = webbrowser::open(RHINO_LINUX_ANNOUNCEMENT_URL) {
                     eprintln!("Failed to open Announcements url: {}", e);
                 };
                 Task::none()
             }
-
             Message::OpenDiscord => {
                 if let Err(e) = webbrowser::open(RHINO_LINUX_DISCORD_URL) {
                     eprintln!("Failed to open Discord url: {}", e);
                 };
                 Task::none()
             }
-
             Message::OpenReddit => {
                 if let Err(e) = webbrowser::open(RHINO_LINUX_REDDIT_URL) {
                     eprintln!("Failed to open Reddit url: {}", e);
                 };
                 Task::none()
             }
-        };
+        }
     }
 
     fn view(&self) -> Element<Message> {
         let header = header();
         let main_content = main_content();
         let text_col = welcome_text();
-        let footer = footer(&self);
+        let footer = footer(self);
 
         let app_col = column![header, text_col, main_content, footer].height(Length::Fill);
         container(app_col)
