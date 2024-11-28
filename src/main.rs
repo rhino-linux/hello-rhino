@@ -1,8 +1,11 @@
-use crate::Message::ToggleLaunch;
 use auto_launch::{AutoLaunch, AutoLaunchBuilder};
-use iced::widget::{column, container, image, row, text, toggler, Container, Themer, button};
+use iced::widget::{
+    button, checkbox, column, container, image, row, text, toggler, Container, Themer,
+};
 use iced::window::Position;
-use iced::{window, Alignment, Background, Color, Element, Length, Size, Task, Theme, Padding};
+use iced::{
+    window, Alignment, Background, Border, Color, Element, Length, Padding, Size, Task, Theme,
+};
 
 const LOGO: &[u8] = include_bytes!("assets/logo.png");
 
@@ -15,7 +18,7 @@ fn main() -> iced::Result {
     let window_settings = window::Settings {
         size: Size {
             width: 1200.0,
-            height: 800.0,
+            height: 700.0,
         },
         decorations: true,
         position: Position::Centered,
@@ -76,76 +79,203 @@ impl HelloRhino {
         let header = header();
         let main_content = main_content();
         let text_col = welcome_text();
+        let footer = footer(&self);
 
-        let app_col = column![
-            header,
-            text_col,
-            main_content
-        ];
+        let app_col = column![header, text_col, main_content, footer].height(Length::Fill);
         container(app_col)
             .height(Length::Fill)
-            .padding(Padding::from(5))
+            .padding(5)
             .width(Length::Fill)
             .style(move |theme| container::Style {
                 text_color: Some(Color::WHITE),
-                background: Some(Background::Color(Color::from_rgb8(19, 9, 60))),
+                background: Some(Background::Color(Color::from_rgb8(35, 30, 55))),
                 border: Default::default(),
                 shadow: Default::default(),
             })
             .into()
     }
+
 }
 
 fn header<'a>() -> Element<'a, Message> {
     let rhino_logo = iced::widget::image(image::Handle::from_bytes(LOGO))
         .height(200.0)
         .width(200.0);
+
     let header = column![
         rhino_logo,
-        row![
-            text("Welcome to Rhino Linux!").size(36).font(iced::Font {
+        text("Hello, welcome to Rhino Linux!")
+            .size(46)
+            .font(iced::Font {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),
-            text("👋").shaping(text::Shaping::Advanced).size(36)
-        ]
-        .align_y(Alignment::Center)
-        .spacing(10),
     ]
     .align_x(Alignment::Center);
     container(header)
         .align_x(Alignment::Center)
         .width(Length::Fill)
-        .height(Length::Fill)
+        .height(Length::Fixed(300.0))
         .into()
 }
 
 fn welcome_text<'a>() -> Element<'a, Message> {
     let welcome_text_column = column![
-        row![
-            text("Thank you for joining our community!").size(24).center(),text("😊").size(24).shaping(text::Shaping::Advanced)].spacing(5).align_y(Alignment::Center),
-        text("We, the Rhino Linux Developers, hope that you will enjoy using Rhino Linux as much as we enjoy building it. The links below will help you get started with your new operating system. So enjoy the experience, and don’t hesitate to send us your feedback.").center().size(24)
-    ].spacing(20);
+            text("Welcome, to your new Operating System. Rhino Linux is an Ubuntu-based, rolling release distribution. We hope that you enjoy Rhino Linux, and all of the unique features we offer.").size(26)
+    ]
+    .spacing(20);
     container(welcome_text_column)
+        .padding(iced::Padding {
+            top: 0.0,
+            right: 20.0,
+            bottom: 0.0,
+            left: 20.0,
+        })
         .align_y(Alignment::Center)
         .align_x(Alignment::Center)
         .width(Length::Fill)
-        .height(Length::Fill)
+        .height(Length::Fixed(100.0))
         .into()
 }
 
 fn main_content<'a>() -> Element<'a, Message> {
-
-    let content_column = row![
-        button(text("Annoucements").size(28).center()).width(300.0),
-        button(text("Wiki").size(28).center()).width(300.0),
-        button(text("Discord Community").center().size(28)).width(300.0),
-    ].align_y(Alignment::Center).spacing(10);
+    let content_column = column![
+        row![
+            button(text("Announcements").size(28).center().font(iced::Font {
+                weight: iced::font::Weight::Bold,
+                ..Default::default()
+            }),)
+            .width(300.0)
+            .padding(10.0)
+            .style(move |theme, status| {
+                button::Style {
+                    background: Some(Background::Color(Color::from_rgb8(141, 123, 228))),
+                    text_color: Color::WHITE,
+                    border: Border {
+                        color: Default::default(),
+                        width: 0.0,
+                        radius: 10.0.into(),
+                    },
+                    shadow: Default::default(),
+                }
+            }),
+            button(text("Wiki").size(28).center().font(iced::Font {
+                weight: iced::font::Weight::Bold,
+                ..Default::default()
+            }),)
+            .padding(10.0)
+            .width(300.0)
+            .style(move |theme, status| {
+                button::Style {
+                    background: Some(Background::Color(Color::from_rgb8(141, 123, 228))),
+                    text_color: Color::WHITE,
+                    border: Border {
+                        color: Default::default(),
+                        width: 0.0,
+                        radius: 10.0.into(),
+                    },
+                    shadow: Default::default(),
+                }
+            }),
+            button(text("Github").center().size(28).font(iced::Font {
+                weight: iced::font::Weight::Bold,
+                ..Default::default()
+            }),)
+            .padding(10.0)
+            .width(300.0)
+            .style(move |theme, status| {
+                button::Style {
+                    background: Some(Background::Color(Color::from_rgb8(141, 123, 228))),
+                    text_color: Color::WHITE,
+                    border: Border {
+                        color: Default::default(),
+                        width: 0.0,
+                        radius: 10.0.into(),
+                    },
+                    shadow: Default::default(),
+                }
+            }),
+        ]
+        .align_y(Alignment::Center)
+        .spacing(15),
+        row![
+            button(text("Discord").size(28).center().font(iced::Font {
+                weight: iced::font::Weight::Bold,
+                ..Default::default()
+            }),)
+            .width(300.0)
+            .padding(10.0)
+            .style(move |theme, status| {
+                button::Style {
+                    background: Some(Background::Color(Color::from_rgb8(141, 123, 228))),
+                    text_color: Color::WHITE,
+                    border: Border {
+                        color: Default::default(),
+                        width: 0.0,
+                        radius: 10.0.into(),
+                    },
+                    shadow: Default::default(),
+                }
+            }),
+            button(text("Reddit").size(28).center().font(iced::Font {
+                weight: iced::font::Weight::Bold,
+                ..Default::default()
+            }),)
+            .padding(10.0)
+            .width(300.0)
+            .style(move |theme, status| {
+                button::Style {
+                    background: Some(Background::Color(Color::from_rgb8(141, 123, 228))),
+                    text_color: Color::WHITE,
+                    border: Border {
+                        color: Default::default(),
+                        width: 0.0,
+                        radius: 10.0.into(),
+                    },
+                    shadow: Default::default(),
+                }
+            }),
+        ].align_y(Alignment::Start).padding(Padding {
+            top: 0.0,
+            right: 0.0,
+            bottom: 0.0,
+            left: 150.0,
+        })
+        .spacing(15),
+    ].spacing(15);
 
     container(content_column)
         .align_x(Alignment::Center)
+        .align_y(Alignment::Center)
         .width(Length::Fill)
-        .height(Length::Fill)
+        .height(Length::Fixed(240.0))
         .into()
+}
 
+fn footer(hello_rhino: &HelloRhino) -> Element<Message> {
+    let footer_row = row![row![
+            text("Launch at start").size(26),
+            toggler(hello_rhino.launch_on_start)
+                .size(40.0)
+                .style(move |theme, status| {
+                    toggler::Style {
+                        background: Color::from_rgb8(141, 123, 228),
+                        background_border_width: 0.0,
+                        background_border_color: Default::default(),
+                        foreground: Color::WHITE,
+                        foreground_border_width: 0.0,
+                        foreground_border_color: Default::default(),
+                    }
+                })
+                .on_toggle(Message::ToggleLaunch)
+        ]
+        .align_y(Alignment::Center)
+        .spacing(5)];
+
+    container(footer_row)
+        .width(Length::Fill)
+        .align_x(Alignment::End)
+        .align_y(Alignment::End)
+        .height(Length::Fixed(40.0))
+        .into()
 }
