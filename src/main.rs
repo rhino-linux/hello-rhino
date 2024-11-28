@@ -1,6 +1,6 @@
 use auto_launch::{AutoLaunch, AutoLaunchBuilder};
 use iced::widget::{
-    button, checkbox, column, container, image, row, text, toggler, Container, Themer,
+    button, column, container, image, row, text, toggler
 };
 use iced::window::Position;
 use iced::{
@@ -8,6 +8,16 @@ use iced::{
 };
 
 const LOGO: &[u8] = include_bytes!("assets/logo.png");
+
+const RHINO_LINUX_ANNOUNCEMENT_URL: &str = "https://blog.rhinolinux.org/";
+const RHINO_LINUX_GITHUB_URL: &str = "https://github.com/rhino-linux";
+
+const RHINO_LINUX_WIKI_URL : &str = "https://wiki.rhinolinux.org/";
+
+const RHINO_LINUX_DISCORD_URL : &str = "https://discord.com/invite/reSvc8Ztk3";
+
+const RHINO_LINUX_REDDIT_URL : &str = "https://www.reddit.com/r/rhinolinux/";
+
 
 struct HelloRhino {
     launch_on_start: bool,
@@ -33,6 +43,11 @@ fn main() -> iced::Result {
 #[derive(Debug, Clone, Copy)]
 enum Message {
     ToggleLaunch(bool),
+    OpenAnnouncement,
+    OpenGithub,
+    OpenReddit,
+    OpenWiki,
+    OpenDiscord,
 }
 
 impl HelloRhino {
@@ -72,6 +87,40 @@ impl HelloRhino {
                 }
                 Task::none()
             }
+            Message::OpenGithub => {
+                if let Err(e) = webbrowser::open(RHINO_LINUX_GITHUB_URL) {
+                    eprintln!("failed to open project repository: {}", e);
+                };
+                Task::none()
+            }
+
+            Message::OpenWiki => {
+                if let Err(e) = webbrowser::open(RHINO_LINUX_WIKI_URL) {
+                    eprintln!("failed to open project repository: {}", e);
+                };
+                Task::none()
+            }
+
+            Message::OpenAnnouncement => {
+                if let Err(e) = webbrowser::open(RHINO_LINUX_ANNOUNCEMENT_URL) {
+                    eprintln!("failed to open project repository: {}", e);
+                };
+                Task::none()
+            }
+
+            Message::OpenDiscord => {
+                if let Err(e) = webbrowser::open(RHINO_LINUX_DISCORD_URL) {
+                    eprintln!("failed to open project repository: {}", e);
+                };
+                Task::none()
+            }
+
+            Message::OpenReddit => {
+                if let Err(e) = webbrowser::open(RHINO_LINUX_REDDIT_URL) {
+                    eprintln!("failed to open project repository: {}", e);
+                };
+                Task::none()
+            }
         };
     }
 
@@ -84,7 +133,7 @@ impl HelloRhino {
         let app_col = column![header, text_col, main_content, footer].height(Length::Fill);
         container(app_col)
             .height(Length::Fill)
-            .padding(5)
+            .padding(10)
             .width(Length::Fill)
             .style(move |theme| container::Style {
                 text_color: Some(Color::WHITE),
@@ -145,6 +194,7 @@ fn main_content<'a>() -> Element<'a, Message> {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),)
+            .on_press(Message::OpenAnnouncement)
             .width(300.0)
             .padding(10.0)
             .style(move |theme, status| {
@@ -163,6 +213,7 @@ fn main_content<'a>() -> Element<'a, Message> {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),)
+            .on_press(Message::OpenWiki)
             .padding(10.0)
             .width(300.0)
             .style(move |theme, status| {
@@ -181,6 +232,7 @@ fn main_content<'a>() -> Element<'a, Message> {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),)
+            .on_press(Message::OpenGithub)
             .padding(10.0)
             .width(300.0)
             .style(move |theme, status| {
@@ -203,6 +255,7 @@ fn main_content<'a>() -> Element<'a, Message> {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),)
+            .on_press(Message::OpenDiscord)
             .width(300.0)
             .padding(10.0)
             .style(move |theme, status| {
@@ -221,6 +274,7 @@ fn main_content<'a>() -> Element<'a, Message> {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),)
+            .on_press(Message::OpenReddit)
             .padding(10.0)
             .width(300.0)
             .style(move |theme, status| {
