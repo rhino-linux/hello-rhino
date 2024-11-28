@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 auto-launch = "0.5.0"
 iced = { version = "0.13", features = ["image"]}
+webbrowser = "1.0.2"
