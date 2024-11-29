@@ -205,7 +205,7 @@ fn header<'a>() -> Element<'a, Message> {
 }
 
 fn welcome_text<'a>() -> Element<'a, Message> {
-    let welcome_text_column = column![text(WELCOME_TEXT).size(26)].spacing(20);
+    let welcome_text_column = column![text(WELCOME_TEXT).size(26).shaping(text::Shaping::Advanced)].spacing(20);
     container(welcome_text_column)
         .padding(iced::Padding {
             top: 0.0,
@@ -324,7 +324,7 @@ fn main_content<'a>() -> Element<'a, Message> {
 
 fn footer(hello_rhino: &HelloRhino) -> Element<Message> {
     let footer_row = row![row![
-        text("Launch at start").size(26),
+        text("Launch at start").size(26).shaping(text::Shaping::Advanced),
         toggler(hello_rhino.launch_on_start)
             .size(40.0)
             .style(move |_theme, status| {
