@@ -7,6 +7,7 @@ use iced::{
 };
 
 const LOGO: &[u8] = include_bytes!("assets/logo.png");
+const UBUNTU_FONT: &[u8] = include_bytes!("assets/ubuntu_regular.ttf");
 
 const RHINO_LINUX_ANNOUNCEMENT_URL: &str = "https://blog.rhinolinux.org/";
 const RHINO_LINUX_GITHUB_URL: &str = "https://github.com/rhino-linux";
@@ -78,6 +79,7 @@ fn main() -> iced::Result {
     };
     iced::application(HelloRhino::title, HelloRhino::update, HelloRhino::view)
         .theme(|_| Theme::Dark)
+        .font(UBUNTU_FONT)
         .window(window_settings)
         .run_with(HelloRhino::new)
 }
@@ -113,7 +115,6 @@ impl HelloRhino {
             Task::none(),
         )
     }
-
     fn title(&self) -> String {
         String::from("Hello Rhino Linux")
     }
