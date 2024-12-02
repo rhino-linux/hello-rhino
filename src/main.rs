@@ -1,10 +1,7 @@
 use auto_launch::{AutoLaunch, AutoLaunchBuilder};
 use iced::border::Radius;
 use iced::widget::{button, column, container, image, row, text, toggler};
-use iced::window::Position;
-use iced::{
-    window, Alignment, Background, Border, Color, Element, Length, Padding, Size, Task, Theme,
-};
+use iced::{Alignment, Background, Border, Color, Element, Length, Padding, Task, Theme};
 
 const LOGO: &[u8] = include_bytes!("assets/logo.png");
 const UBUNTU_FONT: &[u8] = include_bytes!("assets/ubuntu_regular.ttf");
@@ -68,19 +65,10 @@ struct HelloRhino {
 }
 
 fn main() -> iced::Result {
-    let window_settings = window::Settings {
-        size: Size {
-            width: 1200.0,
-            height: 700.0,
-        },
-        decorations: true,
-        position: Position::Centered,
-        ..Default::default()
-    };
     iced::application(HelloRhino::title, HelloRhino::update, HelloRhino::view)
         .theme(|_| Theme::Dark)
         .font(UBUNTU_FONT)
-        .window(window_settings)
+        .window_size((1200.0, 700.0))
         .run_with(HelloRhino::new)
 }
 
