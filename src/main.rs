@@ -1,6 +1,7 @@
 use auto_launch::{AutoLaunch, AutoLaunchBuilder};
 use iced::border::Radius;
 use iced::widget::{button, column, container, image, row, text, toggler};
+use iced::window::Position;
 use iced::{Alignment, Background, Border, Color, Element, Length, Padding, Task, Theme};
 
 const LOGO: &[u8] = include_bytes!("assets/logo.png");
@@ -69,6 +70,7 @@ fn main() -> iced::Result {
         .theme(|_| Theme::Dark)
         .font(UBUNTU_FONT)
         .window_size((1200.0, 700.0))
+        .position(Position::Centered)
         .run_with(HelloRhino::new)
 }
 
