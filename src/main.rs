@@ -1,4 +1,4 @@
-use auto_launch::{AutoLaunch, AutoLaunchBuilder};
+use auto_launch::AutoLaunch;
 use iced::border::Radius;
 use iced::widget::{button, column, container, image, row, text, toggler};
 use iced::window::Position;
@@ -87,12 +87,10 @@ enum Message {
 impl HelloRhino {
     fn new() -> (Self, Task<Message>) {
         // setup config for autostart
-        let auto_launch = AutoLaunchBuilder::new()
-            .set_app_name("hello-rhino")
-            .set_app_path(std::env::current_exe().unwrap().to_str().unwrap())
-            .set_use_launch_agent(true)
-            .build()
-            .unwrap();
+        let exe = std::env::current_exe().unwrap();
+        let app_name = "Hello Rhino";
+        let args = &["--minimized"];
+        let auto_launch = AutoLaunch::new(app_name, exe.to_str().unwrap(), args);
 
         // initially set the autostart to true
         let launch_on_start = auto_launch.enable().is_ok();
