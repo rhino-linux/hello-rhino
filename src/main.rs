@@ -164,7 +164,7 @@ impl HelloRhino {
             .width(Length::Fill)
             .style(move |_theme| container::Style {
                 text_color: Some(Color::WHITE),
-                background: Some(Background::Color(Color::from_rgb8(35, 30, 55))),
+                background: Some(Background::Color(Color::from_rgb8(36, 31, 49))),
                 border: Default::default(),
                 shadow: Default::default(),
             })
