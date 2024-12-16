@@ -2,7 +2,7 @@ use auto_launch::AutoLaunch;
 use iced::border::Radius;
 use iced::widget::{button, column, container, image, row, text, toggler};
 use iced::window::Position;
-use iced::{Alignment, Background, Border, Color, Element, Length, Padding, Task, Theme};
+use iced::{Alignment, Background, Border, Color, Element, Length, Padding, Shadow, Task, Theme};
 
 const LOGO: &[u8] = include_bytes!("assets/logo.png");
 const UBUNTU_FONT: &[u8] = include_bytes!("assets/ubuntu_regular.ttf");
@@ -83,14 +83,23 @@ enum Message {
     OpenWiki,
     OpenDiscord,
 }
-
+impl Message {
+    fn open(&self) -> &str {
+        match self {
+            Self::OpenAnnouncement => RHINO_LINUX_ANNOUNCEMENT_URL,
+            Self::OpenGithub => RHINO_LINUX_GITHUB_URL,
+            Self::OpenReddit => RHINO_LINUX_REDDIT_URL,
+            Self::OpenWiki => RHINO_LINUX_WIKI_URL,
+            Self::OpenDiscord => RHINO_LINUX_DISCORD_URL,
+            Self::ToggleLaunch(_) => panic!("Called `open` on unopenable match"),
+        }
+    }
+}
 impl HelloRhino {
     fn new() -> (Self, Task<Message>) {
         // setup config for autostart
         let exe = std::env::current_exe().unwrap();
-        let app_name = "Hello Rhino";
-        let args = &["--minimized"];
-        let auto_launch = AutoLaunch::new(app_name, exe.to_str().unwrap(), args);
+        let auto_launch = AutoLaunch::new("Hello Rhino", exe.to_str().unwrap(), &["--minimized"]);
 
         // initially set the autostart to true
         let launch_on_start = auto_launch.enable().is_ok();
@@ -108,46 +117,19 @@ impl HelloRhino {
     }
 
     fn update(&mut self, message: Message) -> Task<Message> {
-        match message {
-            Message::ToggleLaunch(launch) => {
-                self.launch_on_start = launch;
-                if self.launch_on_start {
-                    self.auto_launch.enable().unwrap();
-                } else {
-                    self.auto_launch.disable().unwrap();
-                }
-                Task::none()
+        if let Message::ToggleLaunch(launch) = message {
+            self.launch_on_start = launch;
+            if self.launch_on_start {
+                self.auto_launch.enable().unwrap();
+            } else {
+                self.auto_launch.disable().unwrap();
             }
-            Message::OpenGithub => {
-                if let Err(e) = webbrowser::open(RHINO_LINUX_GITHUB_URL) {
-                    eprintln!("Failed to open Github url: {}", e);
-                };
-                Task::none()
-            }
-            Message::OpenWiki => {
-                if let Err(e) = webbrowser::open(RHINO_LINUX_WIKI_URL) {
-                    eprintln!("Failed to open Wiki url:  {}", e);
-                };
-                Task::none()
-            }
-            Message::OpenAnnouncement => {
-                if let Err(e) = webbrowser::open(RHINO_LINUX_ANNOUNCEMENT_URL) {
-                    eprintln!("Failed to open Announcements url: {}", e);
-                };
-                Task::none()
-            }
-            Message::OpenDiscord => {
-                if let Err(e) = webbrowser::open(RHINO_LINUX_DISCORD_URL) {
-                    eprintln!("Failed to open Discord url: {}", e);
-                };
-                Task::none()
-            }
-            Message::OpenReddit => {
-                if let Err(e) = webbrowser::open(RHINO_LINUX_REDDIT_URL) {
-                    eprintln!("Failed to open Reddit url: {}", e);
-                };
-                Task::none()
-            }
+            Task::none()
+        } else {
+            if let Err(e) = webbrowser::open(message.open()) {
+                eprintln!("Failed to open url: {e}");
+            };
+            Task::none()
         }
     }
 
@@ -165,8 +147,8 @@ impl HelloRhino {
             .style(move |_theme| container::Style {
                 text_color: Some(Color::WHITE),
                 background: Some(Background::Color(Color::from_rgb8(36, 31, 49))),
-                border: Default::default(),
-                shadow: Default::default(),
+                border: Border::default(),
+                shadow: Shadow::default(),
             })
             .into()
     }
@@ -320,26 +302,15 @@ fn footer(hello_rhino: &HelloRhino) -> Element<Message> {
             .size(40.0)
             .style(move |_theme, status| {
                 match status {
-                    toggler::Status::Active { is_toggled } => toggler::Style {
+                    toggler::Status::Active { is_toggled }
+                    | toggler::Status::Hovered { is_toggled } => toggler::Style {
                         background: if is_toggled {
                             Color::from_rgb8(141, 123, 228)
                         } else {
                             Color::from_rgb8(50, 50, 50)
                         },
                         background_border_width: 0.0,
-                        background_border_color: Default::default(),
-                        foreground: Color::WHITE,
-                        foreground_border_width: 0.0,
-                        foreground_border_color: Default::default(),
-                    },
-                    toggler::Status::Hovered { is_toggled } => toggler::Style {
-                        background: if is_toggled {
-                            Color::from_rgb8(141, 123, 228)
-                        } else {
-                            Color::from_rgb8(50, 50, 50)
-                        },
-                        background_border_width: 0.0,
-                        background_border_color: Default::default(),
+                        background_border_color: Color::default(),
                         foreground: Color::WHITE,
                         foreground_border_width: 0.0,
                         foreground_border_color: Default::default(),
@@ -347,10 +318,10 @@ fn footer(hello_rhino: &HelloRhino) -> Element<Message> {
                     toggler::Status::Disabled => toggler::Style {
                         background: Color::BLACK,
                         background_border_width: 0.0,
-                        background_border_color: Default::default(),
+                        background_border_color: Color::default(),
                         foreground: Color::WHITE,
                         foreground_border_width: 0.0,
-                        foreground_border_color: Default::default(),
+                        foreground_border_color: Color::default(),
                     },
                 }
             })
