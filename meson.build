@@ -9,9 +9,7 @@ project(
 cargo = find_program('cargo', required: true, version: '>=1.80')
 find_program('rustc', required: true, version: '>=1.80')
 
-
-prefix = get_option('prefix')
-bindir = prefix / get_option('bindir')
+bindir = '/usr/bin'
 
 custom_target(
   'hello-rhino',
