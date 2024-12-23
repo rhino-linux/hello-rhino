@@ -1,0 +1,7 @@
+[Desktop Entry]
+Terminal=false
+Type=Application
+StartupNotify=false
+Exec=/usr/bin/hello-rhino
+Icon=org.rhinolinux.HelloRhino
+Comment=A tool providing access to documentation and support for new Rhino Linux users.
