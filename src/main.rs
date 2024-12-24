@@ -126,7 +126,7 @@ impl HelloRhino {
             }
             Task::none()
         } else {
-            if let Err(e) = webbrowser::open(message.open()) {
+            if let Err(e) = open::that(message.open()) {
                 eprintln!("Failed to open url: {e}");
             };
             Task::none()

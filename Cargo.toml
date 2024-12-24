@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 auto-launch = "0.5.0"
-webbrowser = "1.0.2"
+open = "5.3.1"
 
 [target.'cfg(not(any( all(target_arch = "aarch64", target_os = "linux"), target_arch = "arm" )))'.dependencies]
 iced = { version = "0.13.1", default-features = false, features = ["tokio", "wgpu", "image"] }
@@ -15,5 +15,4 @@ iced = { version = "0.13.1", default-features = false, features = ["tokio", "wgp
 iced = { version = "0.13.1", default-features = false, features = ["tokio", "tiny-skia", "image"] }
 
 [profile.release]
-opt-level = "z"
-overflow-checks = false
+lto = "fat"
