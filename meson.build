@@ -19,10 +19,21 @@ endif
 build_file = meson.global_source_root() / 'target' / (buildtype == 'release' ? 'release' : 'debug') / meson.project_name()
 
 custom_target(
-  'hello-rhino-build',
-  command: [cargo] + rust_args,
+  'hello-rhino',
+  command: [
+    cargo,
+    'build',
+    '-p', meson.project_name(),
+    rust_args,
+    '&&',
+    'cp',
+    build_file,
+    '@OUTPUT@',
+  ],
+  output: 'hello-rhino',
   build_by_default: true,
-  output: [build_file],
+  install: true,
+  install_dir: get_option('bindir'),
 )
 
 desktop_file = files('hello-rhino.desktop')
