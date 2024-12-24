@@ -9,22 +9,24 @@ project(
 cargo = find_program('cargo', required: true, version: '>=1.80')
 find_program('rustc', required: true, version: '>=1.80')
 
-bindir = '/usr/bin'
-
-custom_target(
+executable(
   'hello-rhino',
-  command: [
-    cargo,
-    'build',
-    '-p', meson.project_name(),
-    '--locked',
-    '--release', '&&',
-    'cp',
-    meson.global_source_root() / 'target' / 'release' / meson.project_name(),
-    '@OUTPUT@',
-  ],
-  output: 'hello-rhino',
-  build_by_default: true,
+  'src/main.rs',
   install: true,
-  install_dir: bindir,
+  install_dir: get_option('bindir'),
+)
+
+desktop_file = files('hello-rhino.desktop')
+install_data(desktop_file, install_dir: join_paths(get_option('datadir'), 'applications'))
+
+icon_file = files('org.rhinolinux.HelloRhino.svg')
+install_data(
+  icon_file,
+  install_dir: join_paths(get_option('datadir'), 'icons', 'hicolor', 'scalable', 'apps'),
+)
+
+license_file = files('LICENSE')
+install_data(
+  license_file,
+  install_dir: join_paths(get_option('datadir'), 'licenses', meson.project_name()),
 )
