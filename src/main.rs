@@ -3,7 +3,7 @@ use iced::border::Radius;
 use iced::widget::{button, column, container, image, row, text, toggler};
 use iced::window::Position;
 use iced::{Alignment, Background, Border, Color, Element, Length, Padding, Shadow, Task, Theme};
-use tr::*;
+use tr::{tr, tr_init};
 
 const LOGO: &[u8] = include_bytes!("assets/logo.png");
 const UBUNTU_FONT: &[u8] = include_bytes!("assets/ubuntu_regular.ttf");
@@ -110,6 +110,8 @@ impl HelloRhino {
             Task::none(),
         )
     }
+
+    #[allow(clippy::unused_self)]
     fn title(&self) -> String {
         String::from("Hello Rhino Linux")
     }
@@ -318,7 +320,7 @@ fn footer(hello_rhino: &HelloRhino) -> Element<Message> {
                         background_border_color: Color::default(),
                         foreground: Color::WHITE,
                         foreground_border_width: 0.0,
-                        foreground_border_color: Default::default(),
+                        foreground_border_color: Color::default(),
                     },
                     toggler::Status::Disabled => toggler::Style {
                         background: Color::BLACK,
