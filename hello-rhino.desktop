@@ -1,7 +1,10 @@
 [Desktop Entry]
+Name=Hello Rhino
+GenericName=Welcome
 Terminal=false
 Type=Application
 StartupNotify=false
 Exec=/usr/bin/hello-rhino
+SingleMainWindow=true
 Icon=org.rhinolinux.HelloRhino
-Comment=A tool providing access to documentation and support for new Rhino Linux users.
+Comment=A tool providing access to documentation and support for new Rhino Linux users
