@@ -17,6 +17,7 @@ custom_target(
     cargo,
     'build',
     '-p', meson.project_name(),
+    '--locked',
     '--release', '&&',
     'cp',
     meson.global_source_root() / 'target' / 'release' / meson.project_name(),
