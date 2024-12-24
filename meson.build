@@ -6,14 +6,22 @@ project(
   meson_version: '>= 1.0',
 )
 
-cargo = find_program('cargo', required: true, version: '>=1.80')
+find_program('cargo', required: true, version: '>=1.80')
 find_program('rustc', required: true, version: '>=1.80')
+
+buildtype = get_option('buildtype')
+
+rust_args = ['--locked']
+if buildtype == 'release' or buildtype == 'plain' or buildtype == 'minsize'
+  rust_args += ['--release']
+endif
 
 executable(
   'hello-rhino',
   'src/main.rs',
   install: true,
   install_dir: get_option('bindir'),
+  rust_args: rust_args,
 )
 
 desktop_file = files('hello-rhino.desktop')
