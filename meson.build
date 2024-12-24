@@ -50,3 +50,5 @@ install_data(
   license_file,
   install_dir: join_paths(get_option('datadir'), 'licenses', meson.project_name()),
 )
+
+meson.add_dist_script('rm', '-rf', 'target')
