@@ -21,8 +21,7 @@ custom_target(
   command: [cargo] + rust_args,
   build_by_default: true,
   output: [
-    'target/'
-    + (buildtype == 'release' ? 'release/hello-rhino' : 'debug/hello-rhino'),
+    meson.global_source_root() / 'target' / (buildtype == 'release' ? 'release' : 'debug') / meson.project_name(),
   ],
 )
 
