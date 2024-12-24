@@ -8,12 +8,13 @@ auto-launch = "0.5.0"
 open = "5.3.1"
 tr = { version = "0.1.10", features = ["gettext-rs"] }
 
-[target.'cfg(not(any( all(target_arch = "aarch64", target_os = "linux"), target_arch = "arm" )))'.dependencies]
-iced = { version = "0.13.1", default-features = false, features = ["tokio", "wgpu", "image"] }
+# tiny-skia is much smaller than wgpu.
+iced = { version = "0.13.1", default-features = false, features = ["tiny-skia", "image"] }
 
-[target.'cfg(any(all(target_arch = "aarch64", target_os = "linux"), target_arch = "arm"))'.dependencies]
-# Use 'tiny-skia' renderer in iced
-iced = { version = "0.13.1", default-features = false, features = ["tokio", "tiny-skia", "image"] }
+[dependencies.image]
+version = "*"
+default-features = false
+features = ["png"]
 
 [profile.release]
 lto = "fat"
