@@ -9,6 +9,8 @@ project(
 cargo = find_program('cargo', required: true, version: '>=1.80')
 find_program('rustc', required: true, version: '>=1.80')
 
+po = subdir('po')
+
 buildtype = get_option('buildtype')
 
 rust_args = ['--locked']

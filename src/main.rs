@@ -1,4 +1,5 @@
 use auto_launch::AutoLaunch;
+use gettextrs::*;
 use iced::border::Radius;
 use iced::widget::{button, column, container, image, row, text, toggler};
 use iced::window::Position;
@@ -6,19 +7,6 @@ use iced::{Alignment, Background, Border, Color, Element, Length, Padding, Shado
 
 const LOGO: &[u8] = include_bytes!("assets/logo.png");
 const UBUNTU_FONT: &[u8] = include_bytes!("assets/ubuntu_regular.ttf");
-
-const RHINO_LINUX_ANNOUNCEMENT_URL: &str = "https://blog.rhinolinux.org/";
-const RHINO_LINUX_GITHUB_URL: &str = "https://github.com/rhino-linux";
-
-const RHINO_LINUX_WIKI_URL: &str = "https://wiki.rhinolinux.org/";
-
-const RHINO_LINUX_DISCORD_URL: &str = "https://discord.com/invite/reSvc8Ztk3";
-
-const RHINO_LINUX_REDDIT_URL: &str = "https://www.reddit.com/r/rhinolinux/";
-
-const WELCOME_TEXT: &str = "Welcome, to your new Operating System. Rhino Linux is an Ubuntu-based, rolling release distribution. We hope that you enjoy Rhino Linux, and all of the unique features we offer.";
-
-const HELLO_RHINO_TEXT: &str = "Hello, Welcome to Rhino Linux!";
 
 const ACTIVE_BUTTON_STYLE: button::Style = button::Style {
     background: Some(Background::Color(Color::from_rgba(0.55, 0.48, 0.89, 1.0))),
@@ -66,6 +54,10 @@ struct HelloRhino {
 }
 
 fn main() -> iced::Result {
+    textdomain("rhino-hello").expect("Found zero-byte in name, which should be impossible");
+    bind_textdomain_codeset("rhino-hello", "UTF-8")
+        .expect("Found zero-byte in name, which should be impossible");
+
     iced::application(HelloRhino::title, HelloRhino::update, HelloRhino::view)
         .theme(|_| Theme::Dark)
         .font(UBUNTU_FONT)
@@ -86,11 +78,11 @@ enum Message {
 impl Message {
     fn open(&self) -> &str {
         match self {
-            Self::OpenAnnouncement => RHINO_LINUX_ANNOUNCEMENT_URL,
-            Self::OpenGithub => RHINO_LINUX_GITHUB_URL,
-            Self::OpenReddit => RHINO_LINUX_REDDIT_URL,
-            Self::OpenWiki => RHINO_LINUX_WIKI_URL,
-            Self::OpenDiscord => RHINO_LINUX_DISCORD_URL,
+            Self::OpenAnnouncement => "https://blog.rhinolinux.org/",
+            Self::OpenGithub => "https://github.com/rhino-linux/",
+            Self::OpenReddit => "https://reddit.com/r/rhinolinux/",
+            Self::OpenWiki => "https://wiki.rhinolinux.org/",
+            Self::OpenDiscord => "https://discord.com/invite/reSvc8Ztk3",
             Self::ToggleLaunch(_) => panic!("Called `open` on unopenable match"),
         }
     }
@@ -99,10 +91,17 @@ impl HelloRhino {
     fn new() -> (Self, Task<Message>) {
         // setup config for autostart
         let exe = std::env::current_exe().unwrap();
+
         let auto_launch = AutoLaunch::new("Hello Rhino", exe.to_str().unwrap(), &["--minimized"]);
 
         // initially set the autostart to true
-        let launch_on_start = auto_launch.enable().is_ok();
+        let mut launch_on_start = true;
+        // Disable autostarting when debug running
+        if cfg!(debug_assertions) {
+            launch_on_start = auto_launch.disable().is_ok();
+        } else {
+            launch_on_start = auto_launch.enable().is_ok();
+        }
 
         (
             Self {
@@ -161,10 +160,12 @@ fn header<'a>() -> Element<'a, Message> {
 
     let header = column![
         rhino_logo,
-        text(HELLO_RHINO_TEXT).size(46).font(iced::Font {
-            weight: iced::font::Weight::Bold,
-            ..Default::default()
-        }),
+        text(gettext("Hello, Welcome to Rhino Linux!"))
+            .size(46)
+            .font(iced::Font {
+                weight: iced::font::Weight::Bold,
+                ..Default::default()
+            }),
     ]
     .align_x(Alignment::Center);
     container(header)
@@ -176,7 +177,7 @@ fn header<'a>() -> Element<'a, Message> {
 
 fn welcome_text<'a>() -> Element<'a, Message> {
     let welcome_text_column =
-        column![text(WELCOME_TEXT).size(26).shaping(text::Shaping::Advanced)].spacing(20);
+        column![text(gettext("Welcome, to your new Operating System. Rhino Linux is an Ubuntu-based, rolling release distribution. We hope that you enjoy Rhino Linux, and all of the unique features we offer.")).size(26).shaping(text::Shaping::Advanced)].spacing(20);
     container(welcome_text_column)
         .padding(iced::Padding {
             top: 0.0,
@@ -194,10 +195,15 @@ fn welcome_text<'a>() -> Element<'a, Message> {
 fn main_content<'a>() -> Element<'a, Message> {
     let content_column = column![
         row![
-            button(text("Announcements").size(28).center().font(iced::Font {
-                weight: iced::font::Weight::Bold,
-                ..Default::default()
-            }),)
+            button(
+                text(gettext("Announcements"))
+                    .size(28)
+                    .center()
+                    .font(iced::Font {
+                        weight: iced::font::Weight::Bold,
+                        ..Default::default()
+                    }),
+            )
             .on_press(Message::OpenAnnouncement)
             .width(300.0)
             .padding(10.0)
@@ -209,7 +215,7 @@ fn main_content<'a>() -> Element<'a, Message> {
                     | button::Status::Pressed => HOVERED_BUTTON_STYLE,
                 }
             }),
-            button(text("Wiki").size(28).center().font(iced::Font {
+            button(text(gettext("Wiki")).size(28).center().font(iced::Font {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),)
@@ -224,7 +230,7 @@ fn main_content<'a>() -> Element<'a, Message> {
                     | button::Status::Pressed => HOVERED_BUTTON_STYLE,
                 }
             }),
-            button(text("Github").center().size(28).font(iced::Font {
+            button(text(gettext("Github")).center().size(28).font(iced::Font {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),)
@@ -243,7 +249,7 @@ fn main_content<'a>() -> Element<'a, Message> {
         .align_y(Alignment::Center)
         .spacing(15),
         row![
-            button(text("Discord").size(28).center().font(iced::Font {
+            button(text(gettext("Discord")).size(28).center().font(iced::Font {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),)
@@ -258,7 +264,7 @@ fn main_content<'a>() -> Element<'a, Message> {
                     | button::Status::Pressed => HOVERED_BUTTON_STYLE,
                 }
             }),
-            button(text("Reddit").size(28).center().font(iced::Font {
+            button(text(gettext("Reddit")).size(28).center().font(iced::Font {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),)
@@ -295,7 +301,7 @@ fn main_content<'a>() -> Element<'a, Message> {
 
 fn footer(hello_rhino: &HelloRhino) -> Element<Message> {
     let footer_row = row![row![
-        text("Launch at start")
+        text(gettext("Launch at start"))
             .size(26)
             .shaping(text::Shaping::Advanced),
         toggler(hello_rhino.launch_on_start)

@@ -1,0 +1,39 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: ENCODING\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: src/main.rs:163
+msgid "Hello, Welcome to Rhino Linux!"
+msgstr ""
+
+#: src/main.rs:180
+msgid "Welcome, to your new Operating System. Rhino Linux is an Ubuntu-based, rolling release distribution. We hope that you enjoy Rhino Linux, and all of the unique features we offer."
+msgstr ""
+
+#: src/main.rs:199
+msgid "Announcements"
+msgstr ""
+
+#: src/main.rs:218
+msgid "Wiki"
+msgstr ""
+
+#: src/main.rs:233
+msgid "Github"
+msgstr ""
+
+#: src/main.rs:252
+msgid "Discord"
+msgstr ""
+
+#: src/main.rs:267
+msgid "Reddit"
+msgstr ""
+
+#: src/main.rs:304
+msgid "Launch at start"
+msgstr ""
