@@ -16,13 +16,13 @@ if buildtype == 'release'
   rust_args += ['--release']
 endif
 
+build_file = meson.global_source_root() / 'target' / (buildtype == 'release' ? 'release' : 'debug') / meson.project_name()
+
 custom_target(
   'hello-rhino-build',
   command: [cargo] + rust_args,
   build_by_default: true,
-  output: [
-    meson.global_source_root() / 'target' / (buildtype == 'release' ? 'release' : 'debug') / meson.project_name(),
-  ],
+  output: [build_file],
 )
 
 desktop_file = files('hello-rhino.desktop')
