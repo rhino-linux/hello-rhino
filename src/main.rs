@@ -95,6 +95,7 @@ impl HelloRhino {
         let auto_launch = AutoLaunch::new("Hello Rhino", exe.to_str().unwrap(), &["--minimized"]);
 
         // initially set the autostart to true
+        #[allow(unused_assignments)]
         let mut launch_on_start = true;
         // Disable autostarting when debug running
         if cfg!(debug_assertions) {
