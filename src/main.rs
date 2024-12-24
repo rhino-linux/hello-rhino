@@ -1,9 +1,9 @@
 use auto_launch::AutoLaunch;
-use gettextrs::*;
 use iced::border::Radius;
 use iced::widget::{button, column, container, image, row, text, toggler};
 use iced::window::Position;
 use iced::{Alignment, Background, Border, Color, Element, Length, Padding, Shadow, Task, Theme};
+use tr::*;
 
 const LOGO: &[u8] = include_bytes!("assets/logo.png");
 const UBUNTU_FONT: &[u8] = include_bytes!("assets/ubuntu_regular.ttf");
@@ -54,9 +54,7 @@ struct HelloRhino {
 }
 
 fn main() -> iced::Result {
-    textdomain("rhino-hello").expect("Found zero-byte in name, which should be impossible");
-    bind_textdomain_codeset("rhino-hello", "UTF-8")
-        .expect("Found zero-byte in name, which should be impossible");
+    tr_init!("/usr/share/locale/");
 
     iced::application(HelloRhino::title, HelloRhino::update, HelloRhino::view)
         .theme(|_| Theme::Dark)
@@ -161,7 +159,7 @@ fn header<'a>() -> Element<'a, Message> {
 
     let header = column![
         rhino_logo,
-        text(gettext("Hello, Welcome to Rhino Linux!"))
+        text(tr!("Hello, Welcome to Rhino Linux!"))
             .size(46)
             .font(iced::Font {
                 weight: iced::font::Weight::Bold,
@@ -178,7 +176,7 @@ fn header<'a>() -> Element<'a, Message> {
 
 fn welcome_text<'a>() -> Element<'a, Message> {
     let welcome_text_column =
-        column![text(gettext("Welcome, to your new Operating System. Rhino Linux is an Ubuntu-based, rolling release distribution. We hope that you enjoy Rhino Linux, and all of the unique features we offer.")).size(26).shaping(text::Shaping::Advanced)].spacing(20);
+        column![text(tr!("Welcome, to your new Operating System. Rhino Linux is an Ubuntu-based, rolling release distribution. We hope that you enjoy Rhino Linux, and all of the unique features we offer.")).size(26).shaping(text::Shaping::Advanced)].spacing(20);
     container(welcome_text_column)
         .padding(iced::Padding {
             top: 0.0,
@@ -197,7 +195,7 @@ fn main_content<'a>() -> Element<'a, Message> {
     let content_column = column![
         row![
             button(
-                text(gettext("Announcements"))
+                text(tr!("Announcements"))
                     .size(28)
                     .center()
                     .font(iced::Font {
@@ -216,7 +214,7 @@ fn main_content<'a>() -> Element<'a, Message> {
                     | button::Status::Pressed => HOVERED_BUTTON_STYLE,
                 }
             }),
-            button(text(gettext("Wiki")).size(28).center().font(iced::Font {
+            button(text(tr!("Wiki")).size(28).center().font(iced::Font {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),)
@@ -231,7 +229,7 @@ fn main_content<'a>() -> Element<'a, Message> {
                     | button::Status::Pressed => HOVERED_BUTTON_STYLE,
                 }
             }),
-            button(text(gettext("Github")).center().size(28).font(iced::Font {
+            button(text(tr!("Github")).center().size(28).font(iced::Font {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),)
@@ -250,7 +248,7 @@ fn main_content<'a>() -> Element<'a, Message> {
         .align_y(Alignment::Center)
         .spacing(15),
         row![
-            button(text(gettext("Discord")).size(28).center().font(iced::Font {
+            button(text(tr!("Discord")).size(28).center().font(iced::Font {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),)
@@ -265,7 +263,7 @@ fn main_content<'a>() -> Element<'a, Message> {
                     | button::Status::Pressed => HOVERED_BUTTON_STYLE,
                 }
             }),
-            button(text(gettext("Reddit")).size(28).center().font(iced::Font {
+            button(text(tr!("Reddit")).size(28).center().font(iced::Font {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),)
@@ -302,7 +300,7 @@ fn main_content<'a>() -> Element<'a, Message> {
 
 fn footer(hello_rhino: &HelloRhino) -> Element<Message> {
     let footer_row = row![row![
-        text(gettext("Launch at start"))
+        text(tr!("Launch at start"))
             .size(26)
             .shaping(text::Shaping::Advanced),
         toggler(hello_rhino.launch_on_start)

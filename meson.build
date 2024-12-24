@@ -10,6 +10,7 @@ cargo = find_program('cargo', required: true, version: '>=1.80')
 find_program('rustc', required: true, version: '>=1.80')
 
 i18n = import('i18n')
+po_dir = '/usr/share/locale/'
 subdir('po')
 
 buildtype = get_option('buildtype')

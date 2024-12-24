@@ -1120,9 +1120,9 @@ name = "hello-rhino"
 version = "0.1.0"
 dependencies = [
  "auto-launch",
- "gettext-rs",
  "iced",
  "open",
+ "tr",
 ]
 
 [[package]]
@@ -2836,6 +2836,16 @@ dependencies = [
  "indexmap",
  "toml_datetime",
  "winnow",
+]
+
+[[package]]
+name = "tr"
+version = "0.1.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a592877f7cb2e5a6327b8c908fa6d51098482b1c87d478abdd783e61218f8151"
+dependencies = [
+ "gettext-rs",
+ "lazy_static",
 ]
 
 [[package]]

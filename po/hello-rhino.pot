@@ -1,53 +1,50 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the hello-rhino package.
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: hello-rhino\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-24 12:52-0600\n"
+"POT-Creation-Date: 2024-12-24 19:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/main.rs:163
+#: src/main.rs:162
 msgid "Hello, Welcome to Rhino Linux!"
 msgstr ""
 
-#: src/main.rs:180
-msgid ""
-"Welcome, to your new Operating System. Rhino Linux is an Ubuntu-based, "
-"rolling release distribution. We hope that you enjoy Rhino Linux, and all of "
-"the unique features we offer."
+#: src/main.rs:179
+msgid "Welcome, to your new Operating System. Rhino Linux is an Ubuntu-based, rolling release distribution. We hope that you enjoy Rhino Linux, and all of the unique features we offer."
 msgstr ""
 
-#: src/main.rs:199
+#: src/main.rs:198
 msgid "Announcements"
 msgstr ""
 
-#: src/main.rs:218
+#: src/main.rs:217
 msgid "Wiki"
 msgstr ""
 
-#: src/main.rs:233
+#: src/main.rs:232
 msgid "Github"
 msgstr ""
 
-#: src/main.rs:252
+#: src/main.rs:251
 msgid "Discord"
 msgstr ""
 
-#: src/main.rs:267
+#: src/main.rs:266
 msgid "Reddit"
 msgstr ""
 
-#: src/main.rs:304
+#: src/main.rs:303
 msgid "Launch at start"
 msgstr ""
