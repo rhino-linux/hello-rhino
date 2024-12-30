@@ -94,7 +94,7 @@ impl HelloRhino {
 
         // initially set the autostart to true
         #[allow(unused_assignments)]
-        let mut launch_on_start = true;
+        let mut launch_on_start = false;
         // Disable autostarting when debug running
         if cfg!(debug_assertions) {
             launch_on_start = auto_launch.disable().is_ok();
@@ -120,9 +120,9 @@ impl HelloRhino {
         if let Message::ToggleLaunch(launch) = message {
             self.launch_on_start = launch;
             if self.launch_on_start {
-                self.auto_launch.disable().unwrap();
-            } else {
                 self.auto_launch.enable().unwrap();
+            } else {
+                self.auto_launch.disable().unwrap();
             }
             Task::none()
         } else {
