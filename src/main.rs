@@ -90,7 +90,7 @@ impl HelloRhino {
         // setup config for autostart
         let exe = std::env::current_exe().unwrap();
 
-        let auto_launch = AutoLaunch::new("Hello Rhino", exe.to_str().unwrap(), &["--minimized"]);
+        let auto_launch = AutoLaunch::new("hello-rhino", exe.to_str().unwrap(), &["--minimized"]);
 
         // initially set the autostart to true
         #[allow(unused_assignments)]
@@ -120,9 +120,9 @@ impl HelloRhino {
         if let Message::ToggleLaunch(launch) = message {
             self.launch_on_start = launch;
             if self.launch_on_start {
-                self.auto_launch.enable().unwrap();
-            } else {
                 self.auto_launch.disable().unwrap();
+            } else {
+                self.auto_launch.enable().unwrap();
             }
             Task::none()
         } else {
