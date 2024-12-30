@@ -90,17 +90,15 @@ impl HelloRhino {
         // setup config for autostart
         let exe = std::env::current_exe().unwrap();
 
-        let auto_launch = AutoLaunch::new("Hello Rhino", exe.to_str().unwrap(), &["--minimized"]);
+        let auto_launch = AutoLaunch::new("hello-rhino", exe.to_str().unwrap(), &["--minimized"]);
 
-        // initially set the autostart to true
+        // do not use auto_launch function in debug mode
         #[allow(unused_assignments)]
-        let mut launch_on_start = true;
-        // Disable autostarting when debug running
-        if cfg!(debug_assertions) {
-            launch_on_start = auto_launch.disable().is_ok();
+        let launch_on_start = if cfg!(debug_assertions) {
+            auto_launch.disable().is_ok()
         } else {
-            launch_on_start = auto_launch.enable().is_ok();
-        }
+            auto_launch.is_enabled().unwrap_or(false)
+        };
 
         (
             Self {
