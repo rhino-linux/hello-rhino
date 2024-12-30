@@ -120,9 +120,9 @@ impl HelloRhino {
         if let Message::ToggleLaunch(launch) = message {
             self.launch_on_start = launch;
             if self.launch_on_start {
-                self.auto_launch.enable().unwrap();
-            } else {
                 self.auto_launch.disable().unwrap();
+            } else {
+                self.auto_launch.enable().unwrap();
             }
             Task::none()
         } else {
