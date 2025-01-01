@@ -59,7 +59,7 @@ fn main() -> iced::Result {
     iced::application(HelloRhino::title, HelloRhino::update, HelloRhino::view)
         .theme(|_| Theme::Dark)
         .font(UBUNTU_FONT)
-        .window_size((1200.0, 700.0))
+        .window_size((1200.0, 580.0))
         .position(Position::Centered)
         .run_with(HelloRhino::new)
 }
@@ -140,7 +140,12 @@ impl HelloRhino {
         let app_col = column![header, text_col, main_content, footer].height(Length::Fill);
         container(app_col)
             .height(Length::Fill)
-            .padding(2)
+            .padding(iced::Padding {
+                top: 50.0,
+                right: 2.0,
+                bottom: 2.0,
+                left: 2.0,
+            })
             .width(Length::Fill)
             .style(move |_theme| container::Style {
                 text_color: Some(Color::WHITE),
@@ -160,7 +165,7 @@ fn header<'a>() -> Element<'a, Message> {
     let header = column![
         rhino_logo,
         text(tr!("Hello, Welcome to Rhino Linux!"))
-            .size(46)
+            .size(19)
             .font(iced::Font {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
@@ -170,13 +175,14 @@ fn header<'a>() -> Element<'a, Message> {
     container(header)
         .align_x(Alignment::Center)
         .width(Length::Fill)
-        .height(Length::Fixed(300.0))
+        .height(Length::Fixed(250.0))
         .into()
 }
 
 fn welcome_text<'a>() -> Element<'a, Message> {
     let welcome_text_column =
-        column![text(tr!("Welcome, to your new Operating System. Rhino Linux is an Ubuntu-based, rolling release distribution. We hope that you enjoy Rhino Linux, and all of the unique features we offer.")).size(26).shaping(text::Shaping::Advanced)].spacing(20);
+        column![text(tr!("Welcome, to your new Operating System. Rhino Linux is an Ubuntu-based, rolling release distribution.")).size(15).shaping(text::Shaping::Advanced),
+            text(tr!("We hope that you enjoy Rhino Linux, and all of the unique features we offer.")).size(15).shaping(text::Shaping::Advanced)].align_x(Alignment::Center);
     container(welcome_text_column)
         .padding(iced::Padding {
             top: 0.0,
@@ -187,7 +193,7 @@ fn welcome_text<'a>() -> Element<'a, Message> {
         .align_y(Alignment::Center)
         .align_x(Alignment::Center)
         .width(Length::Fill)
-        .height(Length::Fixed(100.0))
+        .height(Length::Fixed(40.0))
         .into()
 }
 
@@ -196,7 +202,7 @@ fn main_content<'a>() -> Element<'a, Message> {
         row![
             button(
                 text(tr!("Announcements"))
-                    .size(28)
+                    .size(19)
                     .center()
                     .font(iced::Font {
                         weight: iced::font::Weight::Bold,
@@ -214,7 +220,7 @@ fn main_content<'a>() -> Element<'a, Message> {
                     | button::Status::Pressed => HOVERED_BUTTON_STYLE,
                 }
             }),
-            button(text(tr!("Wiki")).size(28).center().font(iced::Font {
+            button(text(tr!("Wiki")).size(19).center().font(iced::Font {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),)
@@ -229,7 +235,7 @@ fn main_content<'a>() -> Element<'a, Message> {
                     | button::Status::Pressed => HOVERED_BUTTON_STYLE,
                 }
             }),
-            button(text(tr!("Github")).center().size(28).font(iced::Font {
+            button(text(tr!("Github")).center().size(19).font(iced::Font {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),)
@@ -248,7 +254,7 @@ fn main_content<'a>() -> Element<'a, Message> {
         .align_y(Alignment::Center)
         .spacing(15),
         row![
-            button(text(tr!("Discord")).size(28).center().font(iced::Font {
+            button(text(tr!("Discord")).size(19).center().font(iced::Font {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),)
@@ -263,7 +269,7 @@ fn main_content<'a>() -> Element<'a, Message> {
                     | button::Status::Pressed => HOVERED_BUTTON_STYLE,
                 }
             }),
-            button(text(tr!("Reddit")).size(28).center().font(iced::Font {
+            button(text(tr!("Reddit")).size(19).center().font(iced::Font {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
             }),)
@@ -294,17 +300,17 @@ fn main_content<'a>() -> Element<'a, Message> {
         .align_x(Alignment::Center)
         .align_y(Alignment::Center)
         .width(Length::Fill)
-        .height(Length::Fixed(250.0))
+        .height(Length::Fixed(200.0))
         .into()
 }
 
 fn footer(hello_rhino: &HelloRhino) -> Element<Message> {
     let footer_row = row![row![
         text(tr!("Launch at start"))
-            .size(26)
+            .size(14)
             .shaping(text::Shaping::Advanced),
         toggler(hello_rhino.launch_on_start)
-            .size(40.0)
+            .size(19.0)
             .style(move |_theme, status| {
                 match status {
                     toggler::Status::Active { is_toggled }
@@ -339,6 +345,6 @@ fn footer(hello_rhino: &HelloRhino) -> Element<Message> {
         .width(Length::Fill)
         .align_x(Alignment::End)
         .align_y(Alignment::End)
-        .height(Length::Fixed(40.0))
+        .height(Length::Fixed(25.0))
         .into()
 }
