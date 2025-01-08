@@ -55,7 +55,7 @@ struct HelloRhino {
 
 fn main() -> iced::Result {
     tr_init!("/usr/share/locale/");
-    let size = Size::new(700.0, 680.0);
+    let size = Size::new(725.0, 675.0);
     let window_settings = Settings {
         size,
         min_size: Some(size),
@@ -156,8 +156,8 @@ fn header<'a>() -> Element<'a, Message> {
 
     let header = column![
         rhino_logo,
-        text(tr!("Hello, Welcome to Rhino Linux!"))
-            .size(28)
+        text(tr!("Welcome to Rhino Linux!"))
+            .size(32)
             .font(iced::Font {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
@@ -173,10 +173,13 @@ fn header<'a>() -> Element<'a, Message> {
 
 fn welcome_text<'a>() -> Element<'a, Message> {
     let welcome_text_column = column![
-        text(tr!("Welcome, to your new Operating System. Rhino Linux is an Ubuntu-based, rolling release distribution."))
+        text(tr!("We're glad you could join us."))
         .size(20)
         .shaping(text::Shaping::Advanced),
-        text(tr!("We hope that you enjoy Rhino Linux, and all of the unique features we offer."))
+        text(tr!("Rhino Linux is an Ubuntu-based, rolling release distribution."))
+        .size(20)
+        .shaping(text::Shaping::Advanced),
+        text(tr!("Below are a few resources to get the most out of your new experience."))
         .size(20)
         .shaping(text::Shaping::Advanced)
     ]
