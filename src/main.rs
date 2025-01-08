@@ -132,7 +132,7 @@ impl HelloRhino {
         let app_col = column![header, text_col, main_content, footer].height(Length::Fill);
         container(app_col)
             .height(Length::Fill)
-            .padding(iced::Padding {
+            .padding(Padding {
                 top: 50.0,
                 right: 2.0,
                 bottom: 2.0,
@@ -186,7 +186,7 @@ fn welcome_text<'a>() -> Element<'a, Message> {
     .align_x(Alignment::Center);
 
     container(welcome_text_column)
-        .padding(iced::Padding {
+        .padding(Padding {
             top: 0.0,
             right: 20.0,
             bottom: 0.0,
@@ -223,21 +223,14 @@ fn main_content<'a>() -> Element<'a, Message> {
             create_button("Wiki", "https://wiki.rhinolinux.org/"),
             create_button("Github", "https://github.com/rhino-linux/"),
         ]
-        .align_y(Alignment::Center)
         .spacing(15),
         row![
             create_button("Discord", "https://discord.com/invite/reSvc8Ztk3"),
             create_button("Reddit", "https://reddit.com/r/rhinolinux/"),
         ]
-        .align_y(Alignment::Start)
-        .padding(Padding {
-            top: 0.0,
-            right: 0.0,
-            bottom: 0.0,
-            left: 150.0,
-        })
         .spacing(15),
     ]
+    .align_x(Alignment::Center)
     .spacing(15);
 
     container(content_column)
