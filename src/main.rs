@@ -1,8 +1,8 @@
 use auto_launch::AutoLaunch;
 use iced::border::Radius;
 use iced::widget::{button, column, container, image, row, text, toggler};
-use iced::window::Position;
-use iced::{Alignment, Background, Border, Color, Element, Length, Padding, Shadow, Task, Theme};
+use iced::window::{Position, Settings};
+use iced::{Alignment, Background, Border, Color, Element, Length, Padding, Shadow, Size, Task, Theme};
 use tr::{tr, tr_init};
 
 const LOGO: &[u8] = include_bytes!("assets/logo.png");
@@ -55,39 +55,29 @@ struct HelloRhino {
 
 fn main() -> iced::Result {
     tr_init!("/usr/share/locale/");
+    let size = Size::new(725.0, 675.0);
+    let window_settings = Settings {
+        size,
+        min_size: Some(size),
+        ..Settings::default()
+    };
 
     iced::application(HelloRhino::title, HelloRhino::update, HelloRhino::view)
         .theme(|_| Theme::Dark)
         .font(UBUNTU_FONT)
-        .window_size((1200.0, 580.0))
+        .window(window_settings)
         .position(Position::Centered)
         .run_with(HelloRhino::new)
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 enum Message {
     ToggleLaunch(bool),
-    OpenAnnouncement,
-    OpenGithub,
-    OpenReddit,
-    OpenWiki,
-    OpenDiscord,
+    Open(String),
 }
-impl Message {
-    fn open(&self) -> &str {
-        match self {
-            Self::OpenAnnouncement => "https://blog.rhinolinux.org/",
-            Self::OpenGithub => "https://github.com/rhino-linux/",
-            Self::OpenReddit => "https://reddit.com/r/rhinolinux/",
-            Self::OpenWiki => "https://wiki.rhinolinux.org/",
-            Self::OpenDiscord => "https://discord.com/invite/reSvc8Ztk3",
-            Self::ToggleLaunch(_) => panic!("Called `open` on unopenable match"),
-        }
-    }
-}
+
 impl HelloRhino {
     fn new() -> (Self, Task<Message>) {
-        // setup config for autostart
         let exe = std::env::current_exe().unwrap();
 
         let auto_launch = AutoLaunch::new("hello-rhino", exe.to_str().unwrap(), &["--minimized"]);
@@ -115,20 +105,22 @@ impl HelloRhino {
     }
 
     fn update(&mut self, message: Message) -> Task<Message> {
-        if let Message::ToggleLaunch(launch) = message {
-            self.launch_on_start = launch;
-            if self.launch_on_start {
-                self.auto_launch.enable().unwrap();
-            } else {
-                self.auto_launch.disable().unwrap();
+        match message {
+            Message::ToggleLaunch(launch) => {
+                self.launch_on_start = launch;
+                if self.launch_on_start {
+                    self.auto_launch.enable().unwrap();
+                } else {
+                    self.auto_launch.disable().unwrap();
+                }
             }
-            Task::none()
-        } else {
-            if let Err(e) = open::that(message.open()) {
-                eprintln!("Failed to open url: {e}");
-            };
-            Task::none()
+            Message::Open(url) => {
+                if let Err(e) = open::that(url) {
+                    eprintln!("Failed to open url: {e}");
+                }
+            }
         }
+        Task::none()
     }
 
     fn view(&self) -> Element<Message> {
@@ -164,8 +156,8 @@ fn header<'a>() -> Element<'a, Message> {
 
     let header = column![
         rhino_logo,
-        text(tr!("Hello, Welcome to Rhino Linux!"))
-            .size(19)
+        text(tr!("Welcome to Rhino Linux!"))
+            .size(32)
             .font(iced::Font {
                 weight: iced::font::Weight::Bold,
                 ..Default::default()
@@ -180,9 +172,19 @@ fn header<'a>() -> Element<'a, Message> {
 }
 
 fn welcome_text<'a>() -> Element<'a, Message> {
-    let welcome_text_column =
-        column![text(tr!("Welcome, to your new Operating System. Rhino Linux is an Ubuntu-based, rolling release distribution.")).size(15).shaping(text::Shaping::Advanced),
-            text(tr!("We hope that you enjoy Rhino Linux, and all of the unique features we offer.")).size(15).shaping(text::Shaping::Advanced)].align_x(Alignment::Center);
+    let welcome_text_column = column![
+        text(tr!("We're glad you could join us."))
+        .size(20)
+        .shaping(text::Shaping::Advanced),
+        text(tr!("Rhino Linux is an Ubuntu-based, rolling release distribution."))
+        .size(20)
+        .shaping(text::Shaping::Advanced),
+        text(tr!("Below are a few resources to get the most out of your new experience."))
+        .size(20)
+        .shaping(text::Shaping::Advanced)
+    ]
+    .align_x(Alignment::Center);
+
     container(welcome_text_column)
         .padding(iced::Padding {
             top: 0.0,
@@ -193,97 +195,39 @@ fn welcome_text<'a>() -> Element<'a, Message> {
         .align_y(Alignment::Center)
         .align_x(Alignment::Center)
         .width(Length::Fill)
-        .height(Length::Fixed(40.0))
+        .height(Length::Fixed(120.0))
         .into()
+}
+
+fn create_button<'a>(label: &str, url: &str) -> Element<'a, Message> {
+    button(
+        text(tr!(label)).size(20).center().font(iced::Font {
+            weight: iced::font::Weight::Bold,
+            ..Default::default()
+        }),
+    )
+    .on_press(Message::Open(url.to_string()))
+    .width(200.0)
+    .padding(10.0)
+    .style(move |_theme, status| match status {
+        button::Status::Active => ACTIVE_BUTTON_STYLE,
+        button::Status::Hovered | button::Status::Disabled | button::Status::Pressed => HOVERED_BUTTON_STYLE,
+    })
+    .into()
 }
 
 fn main_content<'a>() -> Element<'a, Message> {
     let content_column = column![
         row![
-            button(
-                text(tr!("Announcements"))
-                    .size(19)
-                    .center()
-                    .font(iced::Font {
-                        weight: iced::font::Weight::Bold,
-                        ..Default::default()
-                    }),
-            )
-            .on_press(Message::OpenAnnouncement)
-            .width(300.0)
-            .padding(10.0)
-            .style(move |_theme, status| {
-                match status {
-                    button::Status::Active => ACTIVE_BUTTON_STYLE,
-                    button::Status::Hovered
-                    | button::Status::Disabled
-                    | button::Status::Pressed => HOVERED_BUTTON_STYLE,
-                }
-            }),
-            button(text(tr!("Wiki")).size(19).center().font(iced::Font {
-                weight: iced::font::Weight::Bold,
-                ..Default::default()
-            }),)
-            .on_press(Message::OpenWiki)
-            .padding(10.0)
-            .width(300.0)
-            .style(move |_theme, status| {
-                match status {
-                    button::Status::Active => ACTIVE_BUTTON_STYLE,
-                    button::Status::Hovered
-                    | button::Status::Disabled
-                    | button::Status::Pressed => HOVERED_BUTTON_STYLE,
-                }
-            }),
-            button(text(tr!("Github")).center().size(19).font(iced::Font {
-                weight: iced::font::Weight::Bold,
-                ..Default::default()
-            }),)
-            .on_press(Message::OpenGithub)
-            .padding(10.0)
-            .width(300.0)
-            .style(move |_theme, status| {
-                match status {
-                    button::Status::Active => ACTIVE_BUTTON_STYLE,
-                    button::Status::Hovered
-                    | button::Status::Disabled
-                    | button::Status::Pressed => HOVERED_BUTTON_STYLE,
-                }
-            }),
+            create_button("Announcements", "https://blog.rhinolinux.org/"),
+            create_button("Wiki", "https://wiki.rhinolinux.org/"),
+            create_button("Github", "https://github.com/rhino-linux/"),
         ]
         .align_y(Alignment::Center)
         .spacing(15),
         row![
-            button(text(tr!("Discord")).size(19).center().font(iced::Font {
-                weight: iced::font::Weight::Bold,
-                ..Default::default()
-            }),)
-            .on_press(Message::OpenDiscord)
-            .width(300.0)
-            .padding(10.0)
-            .style(move |_theme, status| {
-                match status {
-                    button::Status::Active => ACTIVE_BUTTON_STYLE,
-                    button::Status::Hovered
-                    | button::Status::Disabled
-                    | button::Status::Pressed => HOVERED_BUTTON_STYLE,
-                }
-            }),
-            button(text(tr!("Reddit")).size(19).center().font(iced::Font {
-                weight: iced::font::Weight::Bold,
-                ..Default::default()
-            }),)
-            .on_press(Message::OpenReddit)
-            .padding(10.0)
-            .width(300.0)
-            .style(move |_theme, status| {
-                match status {
-                    button::Status::Active => ACTIVE_BUTTON_STYLE,
-                    button::Status::Hovered
-                    | button::Status::Disabled
-                    | button::Status::Pressed => HOVERED_BUTTON_STYLE,
-                }
-            }),
+            create_button("Discord", "https://discord.com/invite/reSvc8Ztk3"),
+            create_button("Reddit", "https://reddit.com/r/rhinolinux/"),
         ]
         .align_y(Alignment::Start)
         .padding(Padding {
@@ -305,14 +249,14 @@ fn main_content<'a>() -> Element<'a, Message> {
 }
 
 fn footer(hello_rhino: &HelloRhino) -> Element<Message> {
-    let footer_row = row![row![
-        text(tr!("Launch at start"))
-            .size(14)
-            .shaping(text::Shaping::Advanced),
-        toggler(hello_rhino.launch_on_start)
-            .size(19.0)
-            .style(move |_theme, status| {
-                match status {
+    let footer_row = row![
+        row![
+            text(tr!("Launch at start"))
+                .size(18)
+                .shaping(text::Shaping::Advanced),
+            toggler(hello_rhino.launch_on_start)
+                .size(28.0)
+                .style(move |_theme, status| match status {
                     toggler::Status::Active { is_toggled }
                     | toggler::Status::Hovered { is_toggled } => toggler::Style {
                         background: if is_toggled {
@@ -334,12 +278,12 @@ fn footer(hello_rhino: &HelloRhino) -> Element<Message> {
                         foreground_border_width: 0.0,
                         foreground_border_color: Color::default(),
                     },
-                }
-            })
-            .on_toggle(Message::ToggleLaunch)
-    ]
-    .align_y(Alignment::Center)
-    .spacing(5)];
+                })
+                .on_toggle(Message::ToggleLaunch),
+        ]
+        .align_y(Alignment::Center)
+        .spacing(5),
+    ];
 
     container(footer_row)
         .width(Length::Fill)
