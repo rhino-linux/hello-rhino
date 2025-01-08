@@ -8,9 +8,9 @@ use tr::{tr, tr_init};
 const LOGO: &[u8] = include_bytes!("assets/logo.png");
 const UBUNTU_FONT: &[u8] = include_bytes!("assets/ubuntu_regular.ttf");
 
-const ACTIVE_BUTTON_STYLE: button::Style = button::Style {
-    background: Some(Background::Color(Color::from_rgba(0.55, 0.48, 0.89, 1.0))),
+const BASE_BUTTON_STYLE: button::Style = button::Style {
     text_color: Color::WHITE,
+    background: None,
     border: Border {
         color: Color::TRANSPARENT,
         width: 0.0,
@@ -28,24 +28,14 @@ const ACTIVE_BUTTON_STYLE: button::Style = button::Style {
     },
 };
 
+const ACTIVE_BUTTON_STYLE: button::Style = button::Style {
+    background: Some(Background::Color(Color::from_rgba(0.55, 0.48, 0.89, 1.0))),
+    ..BASE_BUTTON_STYLE
+};
+
 const HOVERED_BUTTON_STYLE: button::Style = button::Style {
     background: Some(Background::Color(Color::from_rgba(0.47, 0.40, 0.81, 1.0))),
-    text_color: Color::WHITE,
-    border: Border {
-        color: Color::TRANSPARENT,
-        width: 0.0,
-        radius: Radius {
-            top_left: 10.0,
-            top_right: 10.0,
-            bottom_right: 10.0,
-            bottom_left: 10.0,
-        },
-    },
-    shadow: iced::Shadow {
-        color: Color::from_rgba(0.0, 0.0, 0.0, 0.2),
-        offset: iced::Vector { x: 0.0, y: 0.0 },
-        blur_radius: 0.0,
-    },
+    ..BASE_BUTTON_STYLE
 };
 
 struct HelloRhino {
