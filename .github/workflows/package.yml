@@ -31,4 +31,4 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         name: Hello Rhino (${{ matrix.arch }})
-        path: builds/${{ matrix.arch }}/
+        path: build/builds/${{ matrix.arch }}/
