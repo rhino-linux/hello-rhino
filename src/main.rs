@@ -197,7 +197,7 @@ fn create_button<'a>(label: &str, url: &str) -> Element<'a, Message> {
         }),
     )
     .on_press(Message::Open(url.to_string()))
-    .width(200.0)
+    .width(220.0)
     .padding(10.0)
     .style(move |_theme, status| match status {
         button::Status::Active => ACTIVE_BUTTON_STYLE,
