@@ -1,0 +1,34 @@
+name: Hello Rhino Binary Generation
+
+on:
+  workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: buildjet-4vcpu-ubuntu-2204
+            arch: amd64
+          - os: buildjet-4vcpu-ubuntu-2204-arm
+            arch: arm64
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install needed packages
+      run: |
+        sudo rm -rf /var/lib/apt/lists/*
+        sudo sed -i 's/jammy/.\/devel/g' /etc/apt/sources.list
+        sudo apt-get update && sudo apt-get install gettext cargo meson ninja-build -y
+
+    - name: Setup
+      run: sudo meson setup build/ --buildtype=release --prefix=/usr/local && mkdir -p builds/${{ matrix.arch }}
+
+    - name: Build
+      run: sudo DESTDIR="builds/${{ matrix.arch }}" ninja -C build/ install
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: Hello Rhino (${{ matrix.arch }})
+        path: builds/${{ matrix.arch }}/
