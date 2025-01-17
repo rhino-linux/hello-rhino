@@ -9,9 +9,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: buildjet-4vcpu-ubuntu-2204
+          - os: ubuntu-latest
             arch: amd64
-          - os: buildjet-4vcpu-ubuntu-2204-arm
+          - os: ubuntu-24.04-arm
             arch: arm64
     steps:
     - uses: actions/checkout@v4
