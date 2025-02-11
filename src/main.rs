@@ -45,10 +45,14 @@ struct HelloRhino {
 
 fn main() -> iced::Result {
     tr_init!("/usr/share/locale/");
-    let size = Size::new(725.0, 675.0);
+    
+    // to insure the app always stays the correct siz on any screens, i made it use the screen height and width to get the app size
+    let screen_size = iced::window::Settings::default().size;
+    let window_size = Size::new(screen_size.width * 0.8, screen_size.height * 0.8); 
+
     let window_settings = Settings {
-        size,
-        min_size: Some(size),
+        size: window_size,
+        min_size: Some(Size::new(700.0, 650.0)), 
         ..Settings::default()
     };
 
@@ -70,7 +74,7 @@ impl HelloRhino {
     fn new() -> (Self, Task<Message>) {
         let exe = std::env::current_exe().unwrap();
 
-        let auto_launch = AutoLaunch::new("hello-rhino", exe.to_str().unwrap(), &["--minimized"]);
+        let auto_launch = AutoLaunch::new("hello-rhino", exe.to_str().unwrap(),false, &["--minimized"]); // added false to build on macos (not on linux rn)
 
         // do not use auto_launch function in debug mode
         #[allow(unused_assignments)]
