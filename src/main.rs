@@ -74,7 +74,7 @@ impl HelloRhino {
     fn new() -> (Self, Task<Message>) {
         let exe = std::env::current_exe().unwrap();
 
-        let auto_launch = AutoLaunch::new("hello-rhino", exe.to_str().unwrap(),false, &["--minimized"]); // added false to build on macos (not on linux rn)
+        let auto_launch = AutoLaunch::new("hello-rhino", exe.to_str().unwrap(), &["--minimized"]); 
 
         // do not use auto_launch function in debug mode
         #[allow(unused_assignments)]
