@@ -19,7 +19,7 @@ jobs:
     - name: Install needed packages
       run: |
         sudo rm -rf /var/lib/apt/lists/*
-        sudo sed -i 's/jammy/.\/devel/g' /etc/apt/sources.list
+        sudo sed -i 's/noble/.\/devel/g' /etc/apt/sources.list
         sudo apt-get update && sudo apt-get install gettext cargo meson ninja-build -y
 
     - name: Setup
