@@ -45,10 +45,13 @@ struct HelloRhino {
 
 fn main() -> iced::Result {
     tr_init!("/usr/share/locale/");
-    let size = Size::new(725.0, 675.0);
+    
+    let screen_size = iced::window::Settings::default().size;
+    let window_size = Size::new(screen_size.width * 0.8, screen_size.height * 0.8);
+
     let window_settings = Settings {
-        size,
-        min_size: Some(size),
+        size: window_size,
+        min_size: Some(Size::new(700.0, 650.0)),
         ..Settings::default()
     };
 
